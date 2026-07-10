@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>SWITCH Library Consortium Plugin</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/options.js"></script>
+    <style>
+        /* ── Layout ── */
+        body.main {
+            min-width: 280px;
+            max-width: 320px;
+            padding-bottom: 1rem;
+        }
+
+        .navbar {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        /* ── Search box ── */
+        .searchInputContainer {
+            padding: 0.75rem 0.75rem 0;
+        }
+
+        .searchBox {
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .searchInput {
+            width: 100%;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .searchInput:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.2);
+        }
+
+        /* ── Library list ── */
+        .searchOptions h3 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #6c757d;
+            margin: 0.6rem 0 0.35rem;
+        }
+
+        /* Group dividers */
+        .lib-group + .lib-group {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .lib-group-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #adb5bd;
+            margin-bottom: 0.2rem;
+        }
+
+        .form-check {
+            padding-left: 1.6rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .form-check-input {
+            margin-top: 0.22rem;
+        }
+
+        .form-check-label {
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        /* ── Button row ── */
+        .action-row {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+        }
+
+        .action-row .btn {
+            font-size: 0.82rem;
+            padding: 0.35rem 0.6rem;
+        }
+
+        #btnOpenNewTab {
+            flex: 1;
+        }
+
+        #btnSelectAll {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body class="main">
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light px-3">
+        <a class="navbar-brand" href="https://www.switchinc.org/" target="_blank">
+            <img alt="SWITCH Logo" src="images/icons/SWITCH-logo.png" style="max-height: 2.5em">
+        </a>
+    </nav>
+
+    <!-- spacer so content clears the fixed navbar -->
+    <div style="height: 3.5rem;"></div>
+
+    <div class="searchInputContainer">
+
+        <!-- Search field -->
+        <div class="searchBox">
+            <input id="searchInput" class="dialogInput searchInput" type="text"
+                placeholder="Resource title" autocomplete="off" />
+        </div>
+
+        <div class="searchOptions">
+            <h3>Select libraries to search:</h3>
+
+            <!-- SWITCH -->
+            <div class="lib-group">
+                <div class="lib-group-label">SWITCH</div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Alverno College" id="alverno">
+                    <label class="form-check-label" for="alverno">Alverno</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Concordia University" id="concordia">
+                    <label class="form-check-label" for="concordia">Concordia</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="MIAD" id="miad">
+                    <label class="form-check-label" for="miad">MIAD</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Mount Mary" id="mountmary">
+                    <label class="form-check-label" for="mountmary">Mount Mary</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Sacred Heart" id="sacredheart">
+                    <label class="form-check-label" for="sacredheart">Sacred Heart</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Saint Francis" id="saintfrancis">
+                    <label class="form-check-label" for="saintfrancis">Saint Francis</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Wisconsin Lutheran" id="wlc">
+                    <label class="form-check-label" for="wlc">Wisconsin Lutheran</label>
+                </div>
+            </div>
+
+            <!-- External Partners -->
+            <div class="lib-group">
+                <div class="lib-group-label">External Partners</div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Marquette" id="mrq">
+                    <label class="form-check-label" for="mrq">Marquette</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Eau Claire" id="eau">
+                    <label class="form-check-label" for="eau">UW–Eau Claire</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Green Bay" id="gb">
+                    <label class="form-check-label" for="gb">UW–Green Bay</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Madison Articles" id="mad">
+                    <label class="form-check-label" for="mad">UW–Madison Articles</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Madison Books" id="madb">
+                    <label class="form-check-label" for="madb">UW–Madison Books</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Oshkosh" id="osh">
+                    <label class="form-check-label" for="osh">UW–Oshkosh</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Parkside" id="ps">
+                    <label class="form-check-label" for="ps">UW–Parkside</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Platteville" id="pl">
+                    <label class="form-check-label" for="pl">UW–Platteville</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="River Falls" id="rf">
+                    <label class="form-check-label" for="rf">UW–River Falls</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Stevens Point" id="sp">
+                    <label class="form-check-label" for="sp">UW–Stevens Point</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Stout" id="st">
+                    <label class="form-check-label" for="st">UW–Stout</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Superior" id="su">
+                    <label class="form-check-label" for="su">UW–Superior</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Whitewater" id="ww">
+                    <label class="form-check-label" for="ww">UW–Whitewater</label>
+                </div>
+            </div>
+
+            <!-- Other -->
+            <div class="lib-group">
+                <div class="lib-group-label">Other</div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Google Scholar" id="scholar">
+                    <label class="form-check-label" for="scholar">Google Scholar</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="WorldCat" id="wc">
+                    <label class="form-check-label" for="scholar">WorldCat</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="WMS SHSST" id="wcshsst">
+                    <label class="form-check-label" for="scholar">WorldShare WMS SHSST</label>
+                </div>
+            </div>
+
+        </div><!-- /.searchOptions -->
+
+        <!-- Action buttons -->
+        <div class="action-row">
+            <button type="button" id="btnSelectAll" class="btn btn-outline-secondary">Select All</button>
+            <button type="button" id="btnOpenNewTab" class="btn btn-primary">
+                Search <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+    </div><!-- /.searchInputContainer -->
+
+</body>
+
+</html>

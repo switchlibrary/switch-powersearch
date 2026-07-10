@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+
+    "name": "SWITCH Consortium Library Search Plugin",
+    "description": "Search partner libraries' catalogs at any moment without leaving your current page!",
+    "version": "9.0",
+    "author": "Leiden University Libraries - adapted for the use of the SWITCH Library Consortium",
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    },
+    "action": {
+        "default_icon": "/images/icons/SWITCH-logo-128.png",
+        "default_popup": "popup.html",
+        "default_title": "SWITCH Consortium Library Search Plugin"
+    },
+    "icons": {
+        "16": "/images/icons/SWITCH-logo-16.png",
+        "48": "/images/icons/SWITCH-logo-48.png",
+        "128": "/images/icons/SWITCH-logo-128.png" 
+    },
+    "background": {
+        "service_worker": "js/background.js"
+    },
+    "minimum_chrome_version": "92",
+    "permissions": [
+    "contextMenus",
+    "storage"]
+}
