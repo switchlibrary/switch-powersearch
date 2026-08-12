@@ -3,7 +3,7 @@
 
     "name": "SWITCH Consortium Library Search Plugin",
     "description": "Search partner libraries' catalogs at any moment without leaving your current page!",
-    "version": "9.0",
+    "version": "9.1",
     "author": "Leiden University Libraries - adapted for the use of the SWITCH Library Consortium",
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"
