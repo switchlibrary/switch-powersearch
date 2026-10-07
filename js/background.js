@@ -19,7 +19,7 @@ const searches = [
     },
     {
         title: "Search in the Sacred Heart Library Catalog",
-        url: "https://switch-shsfds.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=SHSST_SWITCH_PCI&vid=01SLCO_SHSFDS:SHSST&offset=0&query=any,contains,%s"
+        url: "https://switch-shsfds.primo.exlibrisgroup.com/discovery/search?tab=ALL&search_scope=SHSST_SWITCH_PCI&vid=01SLCO_SHSFDS:SHSST&offset=0&query=any,contains,%s"
     },
     {
         title: "Search in the Saint Francis Library Catalog",
@@ -91,9 +91,21 @@ const searches = [
     },
         {
         title: "Search in WorldShare WMS SHSST",
-        url: "https://sacredheartschooloftheol.share.worldcat.org/wms/cmnd/nd/discover/items/search?ai0id=level3&ai0type=scope&offset=1&pageSize=10&si0in=kw%3A&si0qs=%s"
+        // %j = search term goes inside a JSON value (JSON-escaped, then URL-encoded)
+        url: "https://sacredheartschooloftheol.share.worldcat.org/wms/cmnd/nd/discovery/bib?searchItems=%5B%7B%22index%22%3A%22kw%3A%22%2C%22queryString%22%3A%22%j%22%2C%22operator%22%3A%22AND%22%7D%5D&scopeLevel=level3&offset=1&sort=librarycount_d&requestType=search&searchType=advancedSearch"
     },
 ];
+
+// Fill a search URL template with the search text.
+//   %j -> text is placed inside a JSON string, so it is JSON-escaped first
+//   %s -> text is URL-encoded
+function fillSearchUrl(template, text) {
+    if (template.includes("%j")) {
+        const jsonSafe = JSON.stringify(text).slice(1, -1);
+        return template.replace("%j", () => encodeURIComponent(jsonSafe));
+    }
+    return template.replace("%s", () => encodeURIComponent(text));
+}
 
 searches.forEach(function (obj, index) {
     chrome.contextMenus.create({
@@ -107,7 +119,7 @@ chrome.contextMenus.onClicked.addListener(function (info) {
     const searchObj = searches[info.menuItemId - 1];
     if (!searchObj) return;
     chrome.tabs.create({
-        url: searchObj.url.replace("%s", encodeURIComponent(info.selectionText)),
+        url: fillSearchUrl(searchObj.url, info.selectionText),
         selected: false
     });
 });

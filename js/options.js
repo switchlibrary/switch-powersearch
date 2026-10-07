@@ -11,7 +11,7 @@ const SEARCH_URLS = {
     alverno:     'https://switch-am.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=AC_SWITCH_PCI&vid=01SLCO_AM:Alverno&offset=0&query=any,contains,',
     miad:        'https://switch-am.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=MIAD_SWITCH_PCI&vid=01SLCO_AM:MIAD&offset=0&query=any,contains,',
     mountmary:   'https://switch-mmwlc.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=SWITCH_MMU_PCI&vid=01SLCO_MMWLC:MMU&offset=0&query=any,contains,',
-    sacredheart: 'https://switch-shsfds.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=SHSST_SWITCH_PCI&vid=01SLCO_SHSFDS:SHSST&offset=0&query=any,contains,',
+    sacredheart: 'https://switch-shsfds.primo.exlibrisgroup.com/discovery/search?tab=ALL&search_scope=SHSST_SWITCH_PCI&vid=01SLCO_SHSFDS:SHSST&offset=0&query=any,contains,',
     saintfrancis:'https://switch-shsfds.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=SFS_SWITCH_PCI&vid=01SLCO_SHSFDS:SFS&offset=0&query=any,contains,',
     wlc:         'https://switch-mmwlc.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=SWITCH_WLC_PCI&vid=01SLCO_MMWLC:WLC&offset=0&query=any,contains,',
     mrq:         'https://marquette.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=MyInst_and_CI&vid=01MARQUETTE_INST:MARQUETTE&offset=0&query=any,contains,',
@@ -29,8 +29,24 @@ const SEARCH_URLS = {
     ww:          'https://wisconsin-uww.primo.exlibrisgroup.com/nde/search?tab=default_tab&sortby=rank&vid=01UWI_WW:WWNDE&lang=en&search_scope=MyInstitution&facet=library,include,2133%E2%80%9313181030002133&query=any,contains,',
     scholar:     'https://scholar.google.com/scholar?q=',
     wc:          'https://search.worldcat.org/search?q=',
-    wcshsst:     'https://sacredheartschooloftheol.share.worldcat.org/wms/cmnd/nd/discover/items/search?ai0id=level3&ai0type=scope&offset=1&pageSize=10&si0in=kw%3A&si0qs=',
+    // %j = search term goes inside a JSON value (JSON-escaped, then URL-encoded)
+    wcshsst:     'https://sacredheartschooloftheol.share.worldcat.org/wms/cmnd/nd/discovery/bib?searchItems=%5B%7B%22index%22%3A%22kw%3A%22%2C%22queryString%22%3A%22%j%22%2C%22operator%22%3A%22AND%22%7D%5D&scopeLevel=level3&offset=1&sort=librarycount_d&requestType=search&searchType=advancedSearch',
 };
+
+// Build the final URL for one library.
+//   URL containing %j -> text is JSON-escaped, URL-encoded, and inserted there
+//   URL containing %s -> text is URL-encoded and inserted there
+//   otherwise         -> URL-encoded text is appended to the end (original behavior)
+function buildSearchUrl(template, text) {
+    if (template.includes('%j')) {
+        const jsonSafe = JSON.stringify(text).slice(1, -1);
+        return template.replace('%j', () => encodeURIComponent(jsonSafe));
+    }
+    if (template.includes('%s')) {
+        return template.replace('%s', () => encodeURIComponent(text));
+    }
+    return template + encodeURIComponent(text);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -75,11 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('btnOpenNewTab').addEventListener('click', function () {
         const raw = document.getElementById('searchInput').value.trim();
         if (!raw) return;
-        const searchstring = encodeURIComponent(raw);
 
         LIBRARY_IDS.forEach(function (id) {
             if (document.getElementById(id).checked && SEARCH_URLS[id]) {
-                chrome.tabs.create({ url: SEARCH_URLS[id] + searchstring });
+                chrome.tabs.create({ url: buildSearchUrl(SEARCH_URLS[id], raw) });
             }
         });
     });
